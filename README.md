@@ -3,8 +3,7 @@ To see how time difference between input pulse and pre-amp (to reduce time jitte
 
 Check the location of the input file.
 
-##Run##
-python -i timewalk.py
+*python -i timewalk.py
 
 to be updated
 
