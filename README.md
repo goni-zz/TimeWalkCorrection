@@ -1,9 +1,10 @@
 # TimeWalkCorrection (1st updated@10/24/2019)
 To see how time difference between input pulse and pre-amp (to reduce time jitter)
 
-Check the location of the input file.
+Check the location of the input file first.
 
-=======================================================================================
+recommend: working based on anaconda installed
+#
 #Run the python
 
 python -i timewalk.py
