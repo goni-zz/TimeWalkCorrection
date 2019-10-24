@@ -3,7 +3,15 @@ To see how time difference between input pulse and pre-amp (to reduce time jitte
 
 Check the location of the input file.
 
-*python -i timewalk.py
+=======================================================================================
+#Run the python
+
+python -i timewalk.py
+
+Fig1. time difference (t1-t0)
+
+Fig2. check the pulse plot and see how it is fine to find each value.
+#
 
 to be updated
 
