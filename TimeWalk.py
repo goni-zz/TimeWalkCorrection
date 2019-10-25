@@ -124,6 +124,10 @@ pl.legend(loc='best')
 pl.savefig("%s/fig1_w_FWHM.pdf" %outputD)
 pl.show()
 
+plt.scatter(t1/dt,t0/dt)
+plt.xlabel("t1 - Ch.2")
+plt.ylabel("t0 - Ch.1")
+plt.savefig("%s/fig_t1_vs_t0.pdf" %outputD)
 ##labels and save
 plt.hist(data, bins=20, label='t1-t0')
 plt.title("t1-t0 (1000evts)")
