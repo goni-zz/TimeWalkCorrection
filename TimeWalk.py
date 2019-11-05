@@ -11,7 +11,7 @@ import os,sys
 verbose = False
 path = "inputHd5/"
 filename = "laser.hd5"
-outputD='results'
+outputD='results/20191030_new2'
 os.system('mkdir -p %s'%outputD)
 f = h5py.File(path+filename,'r')
 dataset = f['C0']
@@ -59,21 +59,44 @@ t1_ = np.repeat(None, events)
 ###
 #for newton method
 x = np.arange(npoints)
+from statistics import mean as y0
+#for old inputs
+xmin_scan_a = 0
+xmax_scan_a = 450
+xmin_scan_b = 800
+xmax_scan_b = 1000
+#for inputs of 20191028
+#xmin_scan_a = 300
+#xmax_scan_a = 800
+#xmin_scan_b = 1500
+#xmax_scan_b = 2000
 for iset in range(events):
 
     y0 = dataset[0, npoints*iset:npoints*(iset+1)]*ymult
     y1 = dataset[1, npoints*iset:npoints*(iset+1)]*ymult
+    a = np.array(y0[xmin_scan_a:xmax_scan_a]) #scan from xmin to xmax for mean value from t0 flat region(low)
+    b = np.array(y0[xmin_scan_b:xmax_scan_b]) #scan from xmin to xmax for mean value from t0 flat region(high)
+    c = np.array(y1[xmin_scan_c:xmax_scan_c]) #scan from xmin to xmax for mean value from t1 flat region(low)
+    yma = np.mean(a)
+    ymb = np.mean(b)
+    ymc = np.mean(c)
+#    print(ym)
+    y_t0 = yma+(ymb-yma)*0.5 #use mean value as the max value and aslo min value
+    y_t1 = ymc+(max(y1)-ymc)*0.8 #use mean value as the max value and aslo min value
 
-    y_t0 = min(y0)+(max(y0)-min(y0))*0.5
-    y_t1 = min(y1)+(max(y1)-min(y1))*0.8
+    #y_t0 = min(y0)+(ymb-min(y0))*0.5 #use mean value as the max value
+    #y_t0 = min(y0)+(max(y0)-min(y0))*0.5 
+    #y_t1 = min(y1)+(max(y1)-min(y1))*0.8
 
     # interpolate
     interp_fn0 = InterpolatedUnivariateSpline(x, y0)
     interp_fn1 = InterpolatedUnivariateSpline(x, y1)
     #interp_fn = Rbf(x,y1) 
 
-    t0_[iset] = optimize.newton(lambda x: interp_fn0(x)-y_t0, x0=510, maxiter=500)
-    t1_[iset] = optimize.newton(lambda x: interp_fn1(x)-y_t1, x0=830, maxiter=500)
+    #t0_[iset] = optimize.newton(lambda x: interp_fn0(x)-y_t0, x0=510, maxiter=500) #for old input
+    #t1_[iset] = optimize.newton(lambda x: interp_fn1(x)-y_t1, x0=830, maxiter=500) #for old input
+    t0_[iset] = optimize.newton(lambda x: interp_fn0(x)-y_t0, x0=900, maxiter=1100)
+    t1_[iset] = optimize.newton(lambda x: interp_fn1(x)-y_t1, x0=5000,maxiter=6000)
 
 t0 = t0_*dt
 t1 = t1_*dt
